@@ -4,6 +4,9 @@ spring:
 
 ---
 spring:
+  config:
+    activate:
+      on-profile: local
   datasource :
     url : jdbc:mysql://localhost:3306/photo_app?serverTimezone=UTC
     username : prasad
@@ -11,15 +14,18 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  config:
-    activate:
-      on-profile: local
   kafka:
+    template:
+      default-topic: library-events
     consumer:
       bootstrap-servers: localhost:9092,localhost:9093, localhost:9094
       key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: library-event-listener-group-1
+    producer:
+      bootstrap-servers: localhost:9092,localhost:9093, localhost:9094
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 server:
   port: 8081
